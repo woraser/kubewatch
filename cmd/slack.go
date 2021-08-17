@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"github.com/bitnami-labs/kubewatch/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -63,6 +64,7 @@ var slackConfigCmd = &cobra.Command{
 }
 
 func init() {
+	fmt.Println("slack root init")
 	slackConfigCmd.Flags().StringP("channel", "c", "", "Specify slack channel")
 	slackConfigCmd.Flags().StringP("token", "t", "", "Specify slack token")
 	slackConfigCmd.Flags().StringP("title", "", "", "Specify slack msg title")

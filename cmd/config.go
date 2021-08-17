@@ -104,14 +104,18 @@ Display the contents of the contents of ~/.kubewatch.yaml`,
 }
 
 func init() {
+	fmt.Println("cnd config init")
+	// cobra 命令行追加执行命令
+	// 通过叠加方式 灵活使用命令
 	RootCmd.AddCommand(configCmd)
+	// kubewatch config add/test/sample/view
 	configCmd.AddCommand(
 		configAddCmd,
 		configTestCmd,
 		configSampleCmd,
 		configViewCmd,
 	)
-
+	// kubewatch config add slack/hipchat/webhook/......
 	configAddCmd.AddCommand(
 		slackConfigCmd,
 		hipchatConfigCmd,

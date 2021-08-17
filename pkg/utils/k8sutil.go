@@ -29,7 +29,7 @@ func GetClient() kubernetes.Interface {
 
 	return clientset
 }
-
+// 获取默认的kube 配置文件
 func buildOutOfClusterConfig() (*rest.Config, error) {
 	kubeconfigPath := os.Getenv("KUBECONFIG")
 	if kubeconfigPath == "" {
@@ -39,6 +39,7 @@ func buildOutOfClusterConfig() (*rest.Config, error) {
 }
 
 // GetClientOutOfCluster returns a k8s clientset to the request from outside of cluster
+// 类似kubeCtl cmd
 func GetClientOutOfCluster() kubernetes.Interface {
 	config, err := buildOutOfClusterConfig()
 	if err != nil {

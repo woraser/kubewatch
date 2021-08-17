@@ -32,6 +32,7 @@ import (
 )
 
 // Run runs the event loop processing with given handler
+// 启动执行器
 func Run(conf *config.Config) {
 
 	var eventHandler = ParseEventHandler(conf)

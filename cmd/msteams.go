@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"github.com/bitnami-labs/kubewatch/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -49,5 +50,6 @@ var msteamsConfigCmd = &cobra.Command{
 }
 
 func init() {
+	fmt.Println("cnd msteams init")
 	msteamsConfigCmd.Flags().StringP("webhookurl", "w", "", "Specify MS Teams webhook URL")
 }

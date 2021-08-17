@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"github.com/bitnami-labs/kubewatch/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -67,6 +68,7 @@ var mattermostConfigCmd = &cobra.Command{
 }
 
 func init() {
+	fmt.Println("cnd mattermost init")
 	mattermostConfigCmd.Flags().StringP("channel", "c", "", "Specify Mattermost channel")
 	mattermostConfigCmd.Flags().StringP("url", "u", "", "Specify Mattermost url")
 	mattermostConfigCmd.Flags().StringP("username", "n", "", "Specify Mattermost username")

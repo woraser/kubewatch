@@ -35,4 +35,5 @@ var smtpConfigCmd = &cobra.Command{
 }
 
 func init() {
+	fmt.Println("cnd smtp init")
 }

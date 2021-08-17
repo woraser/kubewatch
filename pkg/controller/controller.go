@@ -70,7 +70,7 @@ type Controller struct {
 // Start prepares watchers and run their controllers, then waits for process termination signals
 func Start(conf *config.Config, eventHandler handlers.Handler) {
 	var kubeClient kubernetes.Interface
-
+	// 判断当前服务是否再k8s集群中，不同的方式获取kubeClient
 	if _, err := rest.InClusterConfig(); err != nil {
 		kubeClient = utils.GetClientOutOfCluster()
 	} else {
@@ -509,11 +509,13 @@ func Start(conf *config.Config, eventHandler handlers.Handler) {
 }
 
 func newResourceController(client kubernetes.Interface, eventHandler handlers.Handler, informer cache.SharedIndexInformer, resourceType string) *Controller {
+	// 新建限流队列
 	queue := workqueue.NewRateLimitingQueue(workqueue.DefaultControllerRateLimiter())
 	var newEvent Event
 	var err error
 	informer.AddEventHandler(cache.ResourceEventHandlerFuncs{
 		AddFunc: func(obj interface{}) {
+			// 根据实现meta.Interface的obj 获取key
 			newEvent.key, err = cache.MetaNamespaceKeyFunc(obj)
 			newEvent.eventType = "create"
 			newEvent.resourceType = resourceType
@@ -559,7 +561,7 @@ func (c *Controller) Run(stopCh <-chan struct{}) {
 
 	c.logger.Info("Starting kubewatch controller")
 	serverStartTime = time.Now().Local()
-
+    // 启动informer 接受events
 	go c.informer.Run(stopCh)
 
 	if !cache.WaitForCacheSync(stopCh, c.HasSynced) {
@@ -568,7 +570,7 @@ func (c *Controller) Run(stopCh <-chan struct{}) {
 	}
 
 	c.logger.Info("Kubewatch controller synced and ready")
-
+    // 监听/处理 捕获事件
 	wait.Until(c.runWorker, time.Second, stopCh)
 }
 
@@ -589,11 +591,13 @@ func (c *Controller) runWorker() {
 }
 
 func (c *Controller) processNextItem() bool {
+	// 获取新事件
 	newEvent, quit := c.queue.Get()
-
+    // 直接退出
 	if quit {
 		return false
 	}
+	// 无视事件处理结果，都按完成处理
 	defer c.queue.Done(newEvent)
 	err := c.processItem(newEvent.(Event))
 	if err == nil {
@@ -619,6 +623,7 @@ func (c *Controller) processNextItem() bool {
 */
 
 func (c *Controller) processItem(newEvent Event) error {
+	// 获取事件对象
 	obj, _, err := c.informer.GetIndexer().GetByKey(newEvent.key)
 	if err != nil {
 		return fmt.Errorf("Error fetching object with key %s from store: %v", newEvent.key, err)
@@ -628,6 +633,8 @@ func (c *Controller) processItem(newEvent Event) error {
 
 	// hold status type for default critical alerts
 	var status string
+
+	fmt.Println(newEvent.key)
 
 	// namespace retrived from event key incase namespace value is empty
 	if newEvent.namespace == "" && strings.Contains(newEvent.key, "/") {
@@ -641,6 +648,7 @@ func (c *Controller) processItem(newEvent Event) error {
 	case "create":
 		// compare CreationTimestamp and serverStartTime and alert only on latest events
 		// Could be Replaced by using Delta or DeltaFIFO
+		// 只处理程序启动之后的事件
 		if objectMeta.CreationTimestamp.Sub(serverStartTime).Seconds() > 0 {
 			switch newEvent.resourceType {
 			case "NodeNotReady":

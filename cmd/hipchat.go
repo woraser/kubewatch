@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"github.com/bitnami-labs/kubewatch/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -57,6 +58,7 @@ var hipchatConfigCmd = &cobra.Command{
 }
 
 func init() {
+	fmt.Println("hipchat flock init")
 	hipchatConfigCmd.Flags().StringP("room", "r", "", "Specify hipchat room")
 	hipchatConfigCmd.Flags().StringP("token", "t", "", "Specify hipchat token")
 	hipchatConfigCmd.Flags().StringP("url", "u", "", "Specify hipchat server url")

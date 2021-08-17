@@ -68,6 +68,7 @@ func Execute() {
 }
 
 func init() {
+	fmt.Println("cnd root init")
 	cobra.OnInitialize(initConfig)
 
 	// Disable Help subcommand

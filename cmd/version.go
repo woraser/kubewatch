@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -40,5 +41,6 @@ func versionPrettyString() {
 }
 
 func init() {
+	fmt.Println("cnd version init")
 	RootCmd.AddCommand(versionCmd)
 }

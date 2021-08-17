@@ -26,7 +26,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 )
-
+// 定义配置文件，包括处理方式和处理资源
 var (
 	// ConfigFileName stores file of config
 	ConfigFileName = ".kubewatch.yaml"
@@ -166,6 +166,7 @@ func New() (*Config, error) {
 	return c, nil
 }
 
+// 判断配置文件是否存在，若不存在则新建
 func createIfNotExist() error {
 	// create file if not exist
 	configFile := filepath.Join(configDir(), ConfigFileName)
@@ -209,6 +210,7 @@ func (c *Config) Load() error {
 }
 
 // CheckMissingResourceEnvvars will read the environment for equivalent config variables to set
+// 从环境变量覆盖配置文件参数
 func (c *Config) CheckMissingResourceEnvvars() {
 	if !c.Resource.DaemonSet && os.Getenv("KW_DAEMONSET") == "true" {
 		c.Resource.DaemonSet = true

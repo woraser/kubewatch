@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"github.com/bitnami-labs/kubewatch/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -49,5 +50,6 @@ var flockConfigCmd = &cobra.Command{
 }
 
 func init() {
+	fmt.Println("cnd flock init")
 	flockConfigCmd.Flags().StringP("url", "u", "", "Specify Flock url")
 }

@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"fmt"
 	"github.com/bitnami-labs/kubewatch/config"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -167,6 +168,7 @@ func configureResource(operation string, cmd *cobra.Command, conf *config.Config
 }
 
 func init() {
+	fmt.Println("cnd resource init")
 	RootCmd.AddCommand(resourceConfigCmd)
 	resourceConfigCmd.AddCommand(
 		resourceConfigAddCmd,
